@@ -7,6 +7,14 @@ module.exports = ((request) => {
         return typeof value === 'string' && value.trim() !== '';
     }
 
+    function getPersonName(firstName, lastName) {
+        if (isNotBlankString(firstName) && isNotBlankString(lastName)) {
+            return `${firstName} ${lastName}`;
+        } else {
+            throw new Error('First and last name should be not blank.');
+        }
+    }
+
     return {
         getRandomNames: (amount) => {
             const url = 'http://uinames.com/api/?region=United States&amount=' + getAmount(amount, 10);
@@ -15,13 +23,11 @@ module.exports = ((request) => {
                 .then((data) => Array.isArray(data) ? data : [data])
                 .then((names) => names.map((nameObj) => nameObj.name));
         },
+        getPersonName: getPersonName,
         getPersonFullName: (firstName, lastName, title) => {
-            if (isNotBlankString(firstName) && isNotBlankString(lastName)) {
-                const postfix = isNotBlankString(title) ? `, ${title}` : '';
-                return `${firstName} ${lastName}${postfix}`;
-            } else {
-                throw new Error('First and last name should be not blank.');
-            }
+            const personName = getPersonName(firstName, lastName);
+            const postfix = isNotBlankString(title) ? `, ${title}` : '';
+            return personName + postfix;
         },
         splitPersonFullName: (fullNameWithTitle) => {
             const [fullName, title] = fullNameWithTitle.split(', ');
