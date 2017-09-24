@@ -22,6 +22,11 @@ module.exports = ((request) => {
             } else {
                 throw new Error('First and last name should be not blank.');
             }
+        },
+        splitPersonFullName: (fullNameWithTitle) => {
+            const [fullName, title] = fullNameWithTitle.split(', ');
+            const [firstName, lastName] = fullName.split(' ');
+            return { firstName, lastName, title };
         }
     }
 })(require('request-promise-native'));

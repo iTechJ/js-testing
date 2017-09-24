@@ -62,6 +62,34 @@ describe('Chai examples', () => {
                 .with.deep.include(objCopy);
         });
     });
+
+    describe('plugin usage', () => {
+        chai.use(require('chai-json-schema'));
+
+        var nameSchema = {
+            type: 'object',
+            required: ['firstName', 'lastName'],
+            properties: {
+                firstName: {
+                    type: ['string']
+                },
+                lastName: {
+                    type: ['string']
+                },
+                title: {
+                    type: ['string', 'undefined']
+                }
+            }
+        };
+
+        it('should return name suitable for the name schema', () => {
+            const name = nameService.splitPersonFullName('John Doe, B.Sc.');
+            expect(name).to.be.jsonSchema(nameSchema);
+        });
+
+        it('should return name not suitable for the name schema', () => {
+            const name = nameService.splitPersonFullName('John');
+            expect(name).not.to.be.jsonSchema(nameSchema);
+        });
+    });
 });
-
-
