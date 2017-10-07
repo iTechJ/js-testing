@@ -65,6 +65,11 @@ describe('Chai examples', () => {
 
     describe('plugin usage', () => {
         chai.use(require('chai-json-schema'));
+        chai.use(require('chai-as-promised'));
+
+        it('should work with promise', () => {
+            return Promise.resolve(2 + 2).should.eventually.equal(4);
+        });
 
         var nameSchema = {
             type: 'object',
