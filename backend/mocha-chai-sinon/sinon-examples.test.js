@@ -92,4 +92,27 @@ describe('Sinon examples', () => {
             return expect(stub()).to.be.rejectedWith(Error, 'Stub error');
         });
     });
+
+    describe('fake timer', () => {
+        function stopwatch(callback) {
+            const interval = setInterval((params) => callback(params), 10000);
+            return {
+                stop: () => clearInterval(interval)
+            };
+        }
+
+        it.only('should fire interval multiple times', () => {
+            const clock = sinon.useFakeTimers();
+            const callback = sinon.spy();
+
+            const sw = stopwatch(callback);
+
+            clock.tick(21000);
+
+            expect(callback.callCount).to.equal(2);
+
+            sw.stop();
+            clock.restore();
+        });
+    });
 });
