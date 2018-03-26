@@ -101,7 +101,7 @@ describe('Sinon examples', () => {
             };
         }
 
-        it.only('should fire interval multiple times', () => {
+        it('should fire interval multiple times', () => {
             const clock = sinon.useFakeTimers();
             const callback = sinon.spy();
 
